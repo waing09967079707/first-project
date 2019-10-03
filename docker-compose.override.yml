@@ -7,6 +7,8 @@ x-odoo:
   volumes:
   # Put additional volumes here
   - ./.gitignore:/.gitignore:ro
+  # Example of loading a local python library during development
+  # - ~/dev/github.com/xoe-labs/python-xmlsig/src/xmlsig/:/usr/local/lib/python3.7/site-packages/xmlsig/
 
 services:
   odoo:
