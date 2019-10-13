@@ -41,6 +41,26 @@ update:
 	git pull scaffold master
 
 
+# Load a backup into the database
+
+DB_DOCKER := $(shell docker-compose ps -q db)
+restore:
+ifndef DB_DOCKER
+	@echo '$(ccyellow)DB Service must be running, run with: $(ccbold)dcu -d db$(ccend)'
+	exit 1
+endif
+ifndef dbname
+	@echo '$(ccyellow)Usage: $(ccbold)make dbname=<yourname> file=<file within ~/odoo/.backups/...> restore$(ccend)'
+	exit 1
+endif
+ifndef file
+	@echo '$(ccyellow)Usage: $(ccbold)make dbname=<yourname> file=<file within ~/odoo/.backups/...> restore$(ccend)'
+	exit 1
+endif
+	docker exec -i $(DB_DOCKER) createdb -U odoo "$(dbname)"
+	docker exec -i $(DB_DOCKER) pg_restore -U odoo -C --clean --no-acl --no-owner -d "$(dbname)" < ~/odoo/.backups/$(file)
+
+
 ### Pulling images
 
 pull: pull-base pull-devops
