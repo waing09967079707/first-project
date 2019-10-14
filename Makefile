@@ -18,6 +18,27 @@ else
 	endif
 endif
 
+### Transform code between odoo versions
+
+TEST := $(shell git status --porcelain | grep 'src/')
+transform:
+ifneq ($(TEST),)
+	@echo "$(ccred)$(ccbold)Clean your src workdir before applying code transformations to it.$(ccend)"
+	@echo "$(ccred)Then, run $(ccbold)make transform$(ccend)$(ccred) again.$(ccend)"
+	exit 1
+endif
+ifndef modules
+	@echo "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> tranfrom$(ccend)"
+	exit 1
+endif
+ifndef from
+	@echo "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> tranfrom$(ccend)"
+	exit 1
+endif
+transform: transform-docs
+	docker-compose run apply-transform --modules $(modules) --init-version-name $(from) --target-version-name $(ODOO_VERSION)
+endif
+
 
 ### Common repo maintenance
 
@@ -105,6 +126,16 @@ build-devops-docs:
 	@echo "  - For details, visit: https://git.io/fjOtu$(ccend)"
 	@echo "---------------------------------------------------------------------"
 
+
+### Transform operations
+
+transform-docs:
+	@echo "---------------------------------------------------------------------"
+	@echo "$(ccyellow)$(ccbold)$(cculine)Apply code transforms to your current working directory.$(ccend)$(ccyellow)$(ccbold)"
+	@echo "  - Transforms are applied within the container context."
+	@echo "  - Host volume (./src) is bind-mounted in read-write mode."
+	@echo "  - Therefore, changes reflect in your host's working directory."
+	@echo "---------------------------------------------------------------------"
 
 
 ### Patching operations
