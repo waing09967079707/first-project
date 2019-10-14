@@ -21,23 +21,24 @@ endif
 ### Transform code between odoo versions
 
 TEST := $(shell git status --porcelain | grep 'src/')
-transform:
 ifneq ($(TEST),)
+transform:
 	@echo "$(ccred)$(ccbold)Clean your src workdir before applying code transformations to it.$(ccend)"
 	@echo "$(ccred)Then, run $(ccbold)make transform$(ccend)$(ccred) again.$(ccend)"
 	exit 1
 endif
 ifndef modules
+transform:
 	@echo "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> tranfrom$(ccend)"
 	exit 1
 endif
 ifndef from
+transform:
 	@echo "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> tranfrom$(ccend)"
 	exit 1
 endif
 transform: transform-docs
 	docker-compose run apply-transform --modules $(modules) --init-version-name $(from) --target-version-name $(ODOO_VERSION)
-endif
 
 
 ### Common repo maintenance
