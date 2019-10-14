@@ -147,7 +147,7 @@ services:
     command: []
     entrypoint: [odoo-migrate]
     image: ${IMAGE}:edge-${ODOO_VERSION}-devops
-    networks: null
+    networks: []
     tty: true
     entrypoint: [--directory, /opt/odoo/src, --no-commit]
     user: ${COMPOSE_IMPERSONATION}
