@@ -83,6 +83,12 @@ services:
     image: kozea/wdb:3.3.0
     ports: ['1984:1984']
 
+  # http://odoo.localhost/longpolling/
+  odoo-longpolling:
+    << : *default-odoo
+    entrypoint: ['/entrypoint.sh']
+    command: ['gevent', '--dev', 'wdb,reload,qweb,werkzeug,xml']
+
   # http://odoo.localhost
   odoo:
     << : *default-odoo
