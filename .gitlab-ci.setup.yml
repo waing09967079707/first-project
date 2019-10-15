@@ -70,7 +70,7 @@ stages:
   - postgres:latest
   artifacts:
     paths:
-    - testlogs
+    - logs
     expire_in: 1 week
     when: on_failure
   variables:
@@ -89,9 +89,9 @@ stages:
   # Prepare the runtime environment and construe addons paths
   - export ODOO_BASEPATH="${CI_PROJECT_DIR}"
 
-  # Cleanup and set the testlogs artifact folder
-  - rm -rf "${CI_PROJECT_DIR}/testlogs" || true
-  - mkdir -p "${CI_PROJECT_DIR}/testlogs" && touch ${CI_PROJECT_DIR}/testlogs/{initlogs.txt,testlogs.txt}
+  # Cleanup and set the logs artifact folder
+  - rm -rf "${CI_PROJECT_DIR}/logs" || true
+  - mkdir -p "${CI_PROJECT_DIR}/logs" && touch ${CI_PROJECT_DIR}/logs/{init.log,test.log}
 
   - if [[ -r "${CI_PROJECT_DIR}/.adminpwd" ]]; then export ODOO_ADMINPASSWORD_FILE="${CI_PROJECT_DIR}/.adminpwd"; fi
   - source /entrypoint.d/05-set-appenv-ci.sh
@@ -104,12 +104,12 @@ stages:
 
   # Reset custom config and run with **initlogs** file config
   - echo "${CUSTOM_CONFIG}" > "${ODOO_RC}/01-custom.ini"
-  - echo "logfile = ${CI_PROJECT_DIR}/testlogs/initlogs.txt" >> "${ODOO_RC}/01-custom.ini"
+  - echo "logfile = ${CI_PROJECT_DIR}/logs/init.log" >> "${ODOO_RC}/01-custom.ini"
   - dodoo init -n "${ODOO_DB_NAME}"
 
   # Reset custom config and run with **testlogs** file config
   - echo "${CUSTOM_CONFIG}" > "${ODOO_RC}/01-custom.ini"
-  - echo "logfile = ${CI_PROJECT_DIR}/testlogs/testlogs.txt" >> "${ODOO_RC}/01-custom.ini"
+  - echo "logfile = ${CI_PROJECT_DIR}/logs/test.log" >> "${ODOO_RC}/01-custom.ini"
 
 .builds:
   stage: Release
