@@ -88,6 +88,7 @@ services:
     << : *default-odoo
     entrypoint: ['/entrypoint.sh']
     command: ['gevent', '--dev', 'wdb,reload,qweb,werkzeug,xml']
+    depends_on: ['db', 'wdb', 'proxy']
 
   # http://odoo.localhost
   odoo:
