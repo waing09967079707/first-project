@@ -43,7 +43,7 @@ transform: transform-docs
 
 ### Common repo maintenance
 
-create: pull build patch build
+create: pull build patch
 
 patch:
 
