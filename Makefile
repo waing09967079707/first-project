@@ -19,8 +19,8 @@ else
 endif
 
 ### Transform code between odoo versions
-
 TEST_SRC := $(shell git status --porcelain | grep 'src/')
+transform_usage = "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> transfrom$(ccend)"
 TRANSFORM_TARGETS =
 ifeq ($(TEST_SRC),)
 	TRANSFORM_TARGETS += transform-docs
@@ -32,11 +32,11 @@ ifneq ($(TEST_SRC),)
 	exit 1
 endif
 ifndef modules
-	@echo "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> transfrom$(ccend)"
+	@echo "$(transform_usage)"
 	exit 1
 endif
 ifndef from
-	@echo "$(ccyellow)Usage: $(ccbold)make modules=<mod1,mod2> from=<11.0> transfrom$(ccend)"
+	@echo "$(transform_usage)"
 	exit 1
 endif
 	docker-compose run apply-transform --modules $(modules) --init-version-name $(from) --target-version-name $(ODOO_VERSION)
@@ -204,6 +204,7 @@ help:
 	@echo "   $(ccyellow)dcr init $(ccgreen)                       ▸ create dev db"
 	@echo "   $(ccyellow)dcu odoo $(ccgreen)                       ▸ start up odoo"
 	@echo "   $(ccyellow)dcr rmdb $(ccgreen)                       ▸ remove dev db"
+	@echo "   $(ccyellow)make restore $(ccgreen)                   ▸ restore a db"
 	@echo "   $(ccyellow)dcd $(ccgreen)                            ▸ tear down project"
 	@echo ""
 	@echo "$(ccbold)$(ccyellow)$(cculine)Other useful odoo commands:$(ccend)"
@@ -222,6 +223,7 @@ help:
 	@echo "   $(ccyellow)make build $(ccgreen)                     ▸ build your images"
 	@echo "   $(ccyellow)make patch $(ccgreen)                     ▸ patch your workdir"
 	@echo "   $(ccyellow)make update $(ccgreen)                    ▸ pull in scaffold changes"
+	@echo "   $(ccyellow)make transform $(ccgreen)                 ▸ apply code transformations (mig)"
 	@echo "   $(ccyellow)make lint $(ccgreen)                      ▸ apply pre-commit linting"
 	@echo ""
 	@echo "$(ccbold)$(ccyellow)$(cculine)Git Cheatsheet:$(ccend)"
