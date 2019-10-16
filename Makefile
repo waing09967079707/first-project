@@ -116,7 +116,7 @@ build-base-docs:
 	@echo "  - Other vendored modules (\`vendor\` folder)"
 	@echo "  - Project modules (\`src\` folder)"
 	@echo "  - Customizations from the Dockerfile$(ccend)"
-	@echo "---------------------------------------------------------------------"
+	@echo "---------------------------------------------------------------------$(ccend)"
 
 build-devops-docs:
 	@echo "---------------------------------------------------------------------"
@@ -126,7 +126,7 @@ build-devops-docs:
 	@echo "  - Headless browser for JS tests."
 	@echo "  - Some advanced module templates."
 	@echo "  - For details, visit: https://git.io/fjOtu$(ccend)"
-	@echo "---------------------------------------------------------------------"
+	@echo "---------------------------------------------------------------------$(ccend)"
 
 
 ### Transform operations
@@ -137,7 +137,7 @@ transform-docs:
 	@echo "  - Transforms are applied within the container context."
 	@echo "  - Host volume (./src) is bind-mounted in read-write mode."
 	@echo "  - Therefore, changes reflect in your host's working directory."
-	@echo "---------------------------------------------------------------------"
+	@echo "---------------------------------------------------------------------$(ccend)"
 
 
 ### Patching operations
@@ -149,7 +149,7 @@ patch-docs:
 	@echo "  - Host volumes are bind-mounted in read-write mode."
 	@echo "  - Therefore, changes reflect in your host's working directory."
 	@echo "  - Pay attention to the $(ccgreen)green texts$(ccyellow) to see which patch is applied where."
-	@echo "---------------------------------------------------------------------"
+	@echo "---------------------------------------------------------------------$(ccend)"
 
 
 ### General info
