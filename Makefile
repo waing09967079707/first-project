@@ -1,3 +1,4 @@
+current_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ### Load some important stuff
 
 include .env
@@ -39,14 +40,22 @@ ifndef from
 	@echo "$(transform_usage)"
 	exit 1
 endif
-	docker-compose run apply-transform --modules $(modules) --init-version-name $(from) --target-version-name $(ODOO_VERSION)
+	docker run \
+	--volume "$(current_dir)/src:/mnt/src" \
+	--user ${COMPOSE_IMPERSONATION} \
+	--entrypoint "" \
+	${FROM}:${FROM_VERSION}-${ODOO_VERSION}-devops \
+	odoo-migrate \
+	--directory "/mnt/src" \
+	--no-commit \
+	--modules $(modules) \
+	--init-version-name $(from) \
+	--target-version-name $(ODOO_VERSION)
 
 
 ### Common repo maintenance
 
-create: pull build patch
-
-patch:
+create: pull patch build
 
 TEST := $(shell git submodule --quiet foreach git status --porcelain)
 ifneq ($(TEST),)
@@ -56,7 +65,23 @@ patch:
 	@echo "$(ccyellow)Run $(ccbold)git submodule foreach git status --porcelain$(ccend)$(ccyellow) for more info.$(ccend)"
 else
 patch: patch-docs
-	docker-compose run apply-patches
+	@echo "$(ccgreen)$(ccbold)$(cculine)Apply DockeryOdoo default patches.$(ccend)"
+	docker run \
+	--entrypoint "" \
+	--user ${COMPOSE_IMPERSONATION} \
+	--volume '$(current_dir)/vendor:/mnt/vendor' \
+	${FROM}:${FROM_VERSION}-${ODOO_VERSION}-devops \
+	/usr/local/bin/apply-patches.sh \
+	"/opt/odoo/patches.d" "/mnt/"
+	@echo "$(ccgreen)$(ccbold)$(cculine)Apply custom patches.$(ccend)"
+	docker run \
+	--entrypoint "" \
+	--user ${COMPOSE_IMPERSONATION} \
+	--volume '$(current_dir)/vendor:/mnt/vendor' \
+	--volume '$(current_dir)/patches.d:/mnt/patches.d' \
+	${FROM}:${FROM_VERSION}-${ODOO_VERSION}-devops \
+	/usr/local/bin/apply-patches.sh \
+	"/mnt/patches.d/" "/mnt/"
 endif
 
 update:

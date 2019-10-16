@@ -137,29 +137,6 @@ services:
     entrypoint: [dropdb, -hdb, -Uodoo]
     depends_on: ['db']
 
-# -----------------------
-
-  apply-patches:
-    command: []
-    entrypoint: [/patches]
-    image: ${IMAGE}:edge-${ODOO_VERSION}-devops
-    networks: [public]
-    tty: true
-    user: ${COMPOSE_IMPERSONATION}
-    volumes: ['./vendor:/opt/odoo/vendor']
-
-# -----------------------
-
-  apply-transform:
-    command: []
-    entrypoint: [odoo-migrate]
-    image: ${IMAGE}:edge-${ODOO_VERSION}-devops
-    networks: []
-    tty: true
-    entrypoint: [--directory, /opt/odoo/src, --no-commit]
-    user: ${COMPOSE_IMPERSONATION}
-    volumes: ['./src:/opt/odoo/src']
-
 # ------------------------
 
   tests:
