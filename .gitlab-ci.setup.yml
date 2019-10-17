@@ -128,6 +128,9 @@ stages:
   - image="${IMAGE}:${CI_COMMIT_TAG:-edge}-${ODOO_VERSION}"
   - fromimage="${FROM}:${FROM_VERSION}-${ODOO_VERSION}"
 
+  - docker pull ${fromimage} &> /dev/null
+  - docker pull ${fromimage}-devops &> /dev/null
+
   - docker run
     --entrypoint ""
     --user "$(id -u):$(id -g)"
