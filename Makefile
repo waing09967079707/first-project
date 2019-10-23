@@ -104,6 +104,23 @@ endif
 	docker exec -i $(DB_DOCKER) pg_restore -U odoo --create --clean --no-acl --no-owner -d postgres < ~/odoo/.backups/$(file)
 
 
+# Encrypt / decrypt a backup for/after shipping
+
+encrypt:
+ifndef file
+	@echo '$(ccyellow)Usage: $(ccbold)make file=<file within ~/odoo/.backups/...> encrypt$(ccend)'
+	exit 1
+endif
+	tar cz -C ~/odoo/.backups $(file) | openssl enc -aes-256-cbc -e -pbkdf2 > ~/odoo/.backups/$(file).tar.gz.enc
+
+decrypt:
+ifndef file
+	@echo '$(ccyellow)Usage: $(ccbold)make file=<file within ~/odoo/.backups/...> decrypt$(ccend)'
+	exit 1
+endif
+	openssl enc -aes-256-cbc -pbkdf2 -d -in $(file) | tar xz -C ~/odoo/.backups
+
+
 ### Pulling images
 
 pull: pull-base pull-devops
