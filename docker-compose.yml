@@ -59,7 +59,7 @@ services:
     volumes: ['data:/srv/data', 'backup:/srv/backup', 'tests:/srv/tests',
       'loader:/srv/loader']
   proxy:
-    image: envoyproxy/envoy-alpine:v1.10.0
+    image: envoyproxy/envoy-alpine:v1.11.2
     networks:
       default:
         aliases:
@@ -70,8 +70,8 @@ services:
         - cdnjs.cloudflare.com
         - fonts.googleapis.com
         - fonts.gstatic.com
-        - google.com
-        - gravatar.com
+        - www.google.com
+        - www.gravatar.com
       public: null
     ports: ['80:80', '9901:9901']
     volumes: ['./envoy.yaml:/etc/envoy/envoy.yaml']
