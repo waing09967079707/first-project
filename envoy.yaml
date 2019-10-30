@@ -38,7 +38,7 @@ static_resources:
     name: target_smtpfake
     type: strict_dns
   - connect_timeout: 0.25s
-  - dns_resolvers:
+    dns_resolvers:
       - socket_address: {protocol: UDP, address: "1.1.1.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "1.0.0.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "9.9.9.9", port_value: 53}
@@ -54,7 +54,7 @@ static_resources:
     name: service_clouflare
     type: logical_dns
   - connect_timeout: 0.25s
-  - dns_resolvers:
+    dns_resolvers:
       - socket_address: {protocol: UDP, address: "1.1.1.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "1.0.0.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "9.9.9.9", port_value: 53}
@@ -70,7 +70,7 @@ static_resources:
     name: service_google_fonts
     type: logical_dns
   - connect_timeout: 0.25s
-  - dns_resolvers:
+    dns_resolvers:
       - socket_address: {protocol: UDP, address: "1.1.1.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "1.0.0.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "9.9.9.9", port_value: 53}
@@ -86,7 +86,7 @@ static_resources:
     name: service_google_fonts2
     type: logical_dns
   - connect_timeout: 0.25s
-  - dns_resolvers:
+    dns_resolvers:
       - socket_address: {protocol: UDP, address: "1.1.1.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "1.0.0.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "9.9.9.9", port_value: 53}
@@ -102,7 +102,7 @@ static_resources:
     name: service_google
     type: logical_dns
   - connect_timeout: 0.25s
-  - dns_resolvers:
+    dns_resolvers:
       - socket_address: {protocol: UDP, address: "1.1.1.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "1.0.0.1", port_value: 53}
       - socket_address: {protocol: UDP, address: "9.9.9.9", port_value: 53}
