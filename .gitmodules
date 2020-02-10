@@ -1,0 +1,4 @@
+[submodule "vendor/odoo/cc"]
+	path = vendor/odoo/cc
+	url = https://github.com/odoo/odoo.git
+	branch = 12.0
